@@ -1,0 +1,52 @@
+#include <iostream>
+#include <cstring>
+#include <string>
+
+// Уязвимость 1: Использование небезопасной функции strcpy
+void unsafeCopy(char* input) {
+    char buffer[10];
+    strcpy(buffer, input); // Возможное переполнение буфера
+    std::cout << "Buffer content: " << buffer << std::endl;
+}
+
+// Уязвимость 2: Потенциальное деление на ноль
+int divide(int a, int b) {
+    return a / b; // Возможное деление на ноль
+}
+
+// Уязвимость 3: Использование неинициализированной переменной
+void useUninitialized() {
+    int x;
+    if (x > 0) { // Использование неинициализированной переменной
+        std::cout << "x is positive" << std::endl;
+    }
+}
+
+// Уязвимость 4: Утечка памяти
+void memoryLeak() {
+    int* ptr = new int[100];
+    // Забыли вызвать delete[] ptr;
+}
+
+// Уязвимость 5: Потенциальная SQL-инъекция (имитация)
+void processUserInput(const std::string& input) {
+    std::string query = "SELECT * FROM users WHERE username = '" + input + "'"; // Возможная SQL-инъекция
+    std::cout << "Executing query: " << query << std::endl;
+}
+
+int main() {
+    // Демонстрация уязвимостей
+    char longInput[] = "This is a very long string that will overflow the buffer";
+    unsafeCopy(longInput);
+    
+    std::cout << "10 / 0 = " << divide(10, 0) << std::endl; // Деление на ноль
+    
+    useUninitialized();
+    
+    memoryLeak();
+    
+    std::string userInput = "admin' OR '1'='1";
+    processUserInput(userInput);
+    
+    return 0;
+}
