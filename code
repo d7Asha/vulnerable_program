@@ -1,0 +1,43 @@
+#include <iostream>
+#include <cstring>
+#include <cstdio>
+#include <cstdlib>
+#include <unistd.h>
+
+// Уязвимость 1: Переполнение буфера (Buffer Overflow)
+void vulnerableBufferOverflow() {
+    char buffer[10];
+    std::cout << "Enter your name: ";
+    std::cin >> buffer; // Нет проверки длины ввода!
+    std::cout << "Hello, " << buffer << "!" << std::endl;
+}
+
+// Уязвимость 2: Инъекция команд (Command Injection)
+void vulnerableCommandInjection() {
+    char command[100];
+    std::cout << "Enter filename to list: ";
+    std::cin >> command;
+    char fullCommand[150];
+    sprintf(fullCommand, "ls -l %s", command); // Опасный вызов!
+    system(fullCommand); // Выполнение произвольных команд!
+}
+
+// Уязвимость 3: Уязвимость форматной строки (Format String)
+void vulnerableFormatString() {
+    char userInput[100];
+    std::cout << "Enter your message: ";
+    std::cin >> userInput;
+    printf(userInput); // Уязвимость форматной строки!
+    std::cout << std::endl;
+}
+
+int main() {
+    std::cout << "=== Vulnerable C++ Program ===" << std::endl;
+
+    // Вызываем уязвимые функции
+    vulnerableBufferOverflow();
+    vulnerableCommandInjection();
+    vulnerableFormatString();
+
+    return 0;
+}
